@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,12 +14,10 @@
   <body class="bg-verde-800 font-sans">
     <div class="container mt-4 flex justify-center md:justify-start">
       <div class="inline-flex items-center rounded-md bg-verde-900">
-        <span
-          class="size-2 bg-verde-300 block rounded-full relative -left-1"
-        ></span>
+        <span class="size-2 neon block relative -left-1"></span>
         <div class="flex text-verde-300 divide-x-2 divide-verde-800">
-          <div class="px-4 py-2 capitalize" id="dia">segunda</div>
-          <div class="px-4 py-2" id="temperatura">25º</div>
+          <div class="px-4 py-2 capitalize" id="day">segunda</div>
+          <div class="px-4 py-2" id="temperature">25º</div>
           <div class="px-4 py-2" id="tempo">🌤️</div>
         </div>
       </div>
@@ -29,37 +27,79 @@
         <a href="#">
           <img src="./img/forest.svg" alt="" />
         </a>
-        <nav>
+        <nav class="lg:block hidden">
           <ul
             class="flex gap-8 text-white text-2xl lg:text-xl lg:flex lg:flex-wrap lg:gap-8 *:*:transition"
           >
-            <li>
+            <li class="animate-slide-in opacity-0">
               <a
                 href="#acomodacoes"
                 class="hover:underline hover:underline-offset-8"
                 >Acomodações</a
               >
             </li>
-            <li>
+            <li class="animate-slide-in opacity-0 animate-1">
               <a
                 href="#eventos"
                 class="hover:underline hover:underline-offset-8"
                 >Eventos</a
               >
             </li>
-            <li>
+            <li class="animate-slide-in opacity-0 animate-2">
               <a
                 href="#experiencias"
                 class="hover:underline hover:underline-offset-8"
                 >Experiências</a
               >
             </li>
-            <li>
+            <li class="animate-slide-in opacity-0 animate-3">
               <a
                 href="#contato"
                 class="hover:underline hover:underline-offset-8"
                 >Contato</a
               >
+            </li>
+          </ul>
+        </nav>
+
+        <button
+          class="flex place-center lg:hidden bg-verde-950 p-1 rounded-full"
+          id="btn-menu-mobile"
+        >
+          <span class="btn inline-flex items-center gap-2"
+            ><span
+              class="h-3 w-4 *:h-0.5 flex flex-col justify-between *:rounded-md *:bg-verde-800"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+            Menu
+          </span>
+        </button>
+
+        <nav
+          class="hidden fixed inset-0 size-full bg-verde-950/40 backdrop-blur-md z-50 px-4"
+          id="menu-mobile"
+        >
+          <ul
+            class="flex flex-col items-center h-full justify-center divide-y-2 divide-gray-200/20 text-2xl w-full text-white *:*:py-4 *:w-full *:block *:*:block *:*:px-4"
+          >
+            <li class="animate-slide-in opacity-0">
+              <a class="hover:bg-gray-200/20" href="#acomodacoes"
+                >Acomodações</a
+              >
+            </li>
+            <li class="animate-slide-in opacity-0 animate-1">
+              <a class="hover:bg-gray-200/20" href="#eventos">Eventos</a>
+            </li>
+            <li class="animate-slide-in opacity-0 animate-2">
+              <a class="hover:bg-gray-200/20" href="#experiencias"
+                >Experiências</a
+              >
+            </li>
+            <li class="animate-slide-in opacity-0 animate-3">
+              <a class="hover:bg-gray-200/20" href="#contato">Contato</a>
             </li>
           </ul>
         </nav>
@@ -77,8 +117,8 @@
           ></div>
           <!-- Video: z-0 -->
           <video
-            src="./img/video_chuva.mp4"
-            class="absolute top-0 left-0 w-full h-full object-cover object-center z-0"
+            id="video"
+            class="absolute top-0 left-0 w-full h-full object-cover object-center z-0 animate-fade-in"
             autoplay
             loop
             muted
@@ -498,5 +538,43 @@
         </ul>
       </div>
     </footer>
+    <script>
+      function init() {
+        const video = document.querySelector("#video");
+        const temperature = document.querySelector("#temperature");
+        const tempo = document.querySelector("#tempo");
+        const day = document.querySelector("#day");
+        const btn = document.querySelector("#btn-menu-mobile");
+        const menuMobile = document.querySelector("#menu-mobile");
+
+        if (!video || !temperature || !tempo || !day) return;
+
+        const random = Math.floor(Math.random() * 10) + 20;
+        temperature.innerText = `${random}°`;
+        tempo.innerText = random < 25 ? `🌧️ ${random + 5}%` : `☀️`;
+
+        const date = new Date();
+        day.innerText = date
+          .toLocaleDateString("pt-BR", {
+            weekday: "long",
+          })
+          .replace("-feira", "");
+
+        video.src =
+          random < 25 ? `./img/video_chuva.mp4` : `./img/video_sol.mp4`;
+
+        if (!btn || !menuMobile) return;
+
+        btn.addEventListener("click", () => {
+          menuMobile.classList.remove("hidden");
+        });
+
+        menuMobile.addEventListener("click", () => {
+          menuMobile.classList.add("hidden");
+        });
+      }
+
+      init();
+    </script>
   </body>
 </html>

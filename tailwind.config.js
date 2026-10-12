@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import plugin from "tailwindcss/plugin";
 
 module.exports = {
   content: ["./src/**/*.{html,js}"],
@@ -10,10 +11,35 @@ module.exports = {
         sm: "1rem",
       },
     },
+
     extend: {
       fontFamily: {
         sans: ["DM Sans", "system-ui", "sans-serif"],
         serif: ["DM Serif Text", "Georgia", "serif"],
+      },
+      keyframes: {
+        slideIn: {
+          "0%": {
+            opacity: 0,
+            transform: "translateX(-20px)",
+          },
+          "100%": {
+            opacity: 1,
+            transform: "translateX(0)",
+          },
+        },
+        fadeIn: {
+          "0%": {
+            opacity: 0,
+          },
+          "100%": {
+            opacity: 1,
+          },
+        },
+      },
+      animation: {
+        ["slide-in"]: "slideIn .4s ease-in-out forwards",
+        ["fade-in"]: "fadeIn .4s ease-in-out forwards",
       },
       colors: {
         verde: {
@@ -26,10 +52,21 @@ module.exports = {
           950: "#030504",
         },
       },
-      transitionProperty: {
-        width: "width",
-      },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addUtilities }) => {
+      function animationDelay() {
+        const delays = {};
+        for (let i = 0; i <= 12; i++) {
+          delays[`.animate-${i}`] = {
+            "animation-delay": `${i * 100}ms`,
+          };
+        }
+        return delays;
+      }
+
+      addUtilities(animationDelay());
+    }),
+  ],
 };
